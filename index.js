@@ -11,6 +11,7 @@ import rfqsRouter from './Routes/rfqs.js';
 import userRouter from './Routes/userRoutes.js';
 import requisitionRoute from './Routes/requisition_routes.js';
 import approvalRoutes from './Routes/approvalWorkflowRoutes.js';
+import purchaseRoutes from './Routes/purchaseRoutes.js';
 
 
 const app = express();
@@ -26,7 +27,8 @@ app.use('/requirement',requirementRoutes);
 app.use('/rfqs',rfqsRouter);
 app.use('/user',userRouter);
 app.use('/requisition',requisitionRoute);
-app.use('/approval',approvalRoutes)
+app.use('/approval',approvalRoutes);
+app.use('/purchase',purchaseRoutes);
 
 
 

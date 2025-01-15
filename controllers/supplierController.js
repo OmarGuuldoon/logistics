@@ -2,7 +2,7 @@ import db from '../Config/config.js';
 
 
 const createSupplier = async (req, res) => {
-    const { name, email, telephone, contactPerson, address } = req.body;
+    const { name, email, telephone, contactPerson, address , city , state , zip } = req.body;
 
     try {
         // Check if the supplier already exists
@@ -16,8 +16,8 @@ const createSupplier = async (req, res) => {
         }
 
         // Insert new supplier if not already exists
-        const insertSql = `INSERT INTO suppliers (name, email, telephone, contactPerson, address) VALUES (?, ?, ?, ?, ?)`;
-        const [result] = await db.execute(insertSql, [name, email, telephone, contactPerson, address]);
+        const insertSql = `INSERT INTO suppliers (name, email, telephone, contactPerson, address,city,state,zip) VALUES (?, ?, ?, ?, ?,? , ? ,?)`;
+        const [result] = await db.execute(insertSql, [name, email, telephone, contactPerson, address, city, state, zip]);
 
         res.status(201).json({
             message: 'Supplier created successfully',

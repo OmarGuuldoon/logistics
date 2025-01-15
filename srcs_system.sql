@@ -802,8 +802,111 @@ ALTER TABLE `rfq_requirement`
 ALTER TABLE `rfq_suppliers`
   ADD CONSTRAINT `rfq_suppliers_ibfk_1` FOREIGN KEY (`rfq_id`) REFERENCES `rfqs` (`rfq_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `rfq_suppliers_ibfk_2` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`supplier_id`) ON DELETE CASCADE;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `purchaseorders`
+--
+
+CREATE TABLE `purchaseorders` (
+  `po_id` int(11) NOT NULL,
+  `requisition_id` int(11) NOT NULL,
+  `supplier_id` int(11) NOT NULL,
+  `address_id` int(11) NOT NULL,
+  `po_code` varchar(50) NOT NULL,
+  `required_ship_date` date NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `purchaseorders`
+--
+ALTER TABLE `purchaseorders`
+  ADD PRIMARY KEY (`po_id`),
+  ADD UNIQUE KEY `po_code` (`po_code`),
+  ADD KEY `requisition_id` (`requisition_id`),
+  ADD KEY `supplier_id` (`supplier_id`),
+  ADD KEY `address_id` (`address_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `purchaseorders`
+--
+ALTER TABLE `purchaseorders`
+  MODIFY `po_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `purchaseorders`
+--
+ALTER TABLE `purchaseorders`
+  ADD CONSTRAINT `purchaseorders_ibfk_1` FOREIGN KEY (`requisition_id`) REFERENCES `requisitions` (`requisition_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `purchaseorders_ibfk_2` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`supplier_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `purchaseorders_ibfk_3` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`address_id`) ON DELETE CASCADE;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `purchaseorderitems`
+--
+
+CREATE TABLE `purchaseorderitems` (
+  `item_id` int(11) NOT NULL,
+  `po_id` int(11) NOT NULL,
+  `description` text NOT NULL,
+  `qty` int(11) NOT NULL,
+  `uom` varchar(50) NOT NULL,
+  `unit_price` decimal(15,2) NOT NULL,
+  `total_price` decimal(15,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `purchaseorderitems`
+--
+ALTER TABLE `purchaseorderitems`
+  ADD PRIMARY KEY (`item_id`),
+  ADD KEY `po_id` (`po_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `purchaseorderitems`
+--
+ALTER TABLE `purchaseorderitems`
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `purchaseorderitems`
+--
+ALTER TABLE `purchaseorderitems`
+  ADD CONSTRAINT `purchaseorderitems_ibfk_1` FOREIGN KEY (`po_id`) REFERENCES `purchaseorders` (`po_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
