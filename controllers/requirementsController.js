@@ -1,6 +1,5 @@
 import db from '../Config/config.js';
 
-// POST /requirements
 const createRequirement = async (req, res) => {
     const { 
         quotation_valid_from, 

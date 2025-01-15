@@ -154,17 +154,17 @@ const rfqDetails = async (req, res) => {
     try {
         const connection = await db.getConnection();
 
-        // Fetch RFQ details
+        
         const [rfq] = await connection.query('SELECT * FROM RFQs WHERE rfq_id = ?', [id]);
         if (rfq.length === 0) {
             connection.release();
             return res.status(404).json({ error: 'RFQ not found' });
         }
 
-        // Fetch related Items
+        
         const [items] = await connection.query('SELECT * FROM Items WHERE rfq_id = ?', [id]);
 
-        // Fetch related Requirements
+        
         const [requirements] = await connection.query('SELECT * FROM Requirements WHERE rfq_id = ?', [id]);
 
     
@@ -175,7 +175,7 @@ const rfqDetails = async (req, res) => {
              WHERE rs.rfq_id = ?`,
             [id]
         );
-        // Fetch related General Terms
+        
         const [generalTerms] = await connection.query(
             `SELECT gt.description
              FROM rfq_general_terms rgt
@@ -184,7 +184,7 @@ const rfqDetails = async (req, res) => {
             [id]
         );
 
-        // Fetch related Conditions
+        
         const [conditions] = await connection.query(
             `SELECT c.description
              FROM rfq_conditions rc
@@ -193,7 +193,7 @@ const rfqDetails = async (req, res) => {
             [id]    
         );
 
-        // Fetch related Criteria
+        
         const [criteria] = await connection.query(
             `SELECT sc.description
              FROM rfq_criteria rc
@@ -204,7 +204,7 @@ const rfqDetails = async (req, res) => {
 
         connection.release();
 
-        // Combine all data into a single response
+        
         const rfqDetails = {
             ...rfq[0],
             suppliers,
@@ -260,18 +260,10 @@ const getRFQDetailsForSupplier = async (req, res) => {
 
         const rfqData = rfqDetails[0];
 
-        // Fetch items for the supplier in the RFQ
-        // const [items] = await connection.execute(
-        //     `SELECT i.item_id, i.name, i.quantity, i.price 
-        //      FROM items AS i
-        //      JOIN rfq_items AS ri ON ri.item_id = i.item_id
-        //      WHERE ri.rfq_id = ? AND ri.supplier_id = ?`,
-        //     [rfq_id, supplier_id]
-        // );
 
         const [items] = await connection.query('SELECT * FROM Items WHERE rfq_id = ?', [rfq_id]);
 
-        // Fetch requirements for the supplier in the RFQ
+        
         const [requirements] = await connection.execute(
             `SELECT r.quotation_valid_from , r.quotation_valid_to , r.payment_terms , r.delivery_time_days , r.client_reference_1 ,r.client_reference_2 ,r.client_reference_3 , r.purchase_order_1 ,r.purchase_order_2 , r.purchase_order_3
              FROM requirements AS r
@@ -298,7 +290,7 @@ const getRFQDetailsForSupplier = async (req, res) => {
             [rfq_id]    
         );
 
-        // Fetch related Criteria
+        
         const [criteria] = await connection.query(
             `SELECT sc.description
              FROM rfq_criteria rc

@@ -1,33 +1,13 @@
 import db from '../Config/config.js';
 
-// const createCriteria =  async (req, res) => {
-//     const { description } = req.body;
-//     try {
-//         const result = await db.query(
-//             'INSERT INTO selection_criteria (description) VALUES (?)',
-//             [description]
-//         );
-//         res.status(201).json({ id: result.insertId, description });
-//     } catch (err) {
-//         res.status(500).json({ error: 'Failed to add criterion' });
-//     }
-// }
+
 
 const createCriteria = async (req, res) => {
     try {
-        // Step 1: Validate input data
-        // const { error } = addressSchema.validate(req.body);
-        // if (error) {
-        //     return res.status(400).json({
-        //         status: 'fail',
-        //         message: error.details[0].message,
-        //     });
-        // }
-
-        // Step 2: Destructure and prepare data
+        
         const {description} = req.body;
 
-        // Step 3: Insert data into the database
+        
         const query = 'INSERT INTO selection_criteria (description) VALUES (?)';
         const result = await db.execute(query, [description]);
 
@@ -47,20 +27,11 @@ const createCriteria = async (req, res) => {
 
 const updateCriteria = async (req, res) => {
     try {
-        // // Step 1: Validate input data
-        // const { error } = addressSchema.validate(req.body);
-        // if (error) {
-        //     return res.status(400).json({
-        //         status: 'fail',
-        //         message: error.details[0].message,
-        //     });
-        // }
-
-        // Step 2: Destructure and prepare data
+        
         const {description} = req.body;
         const criteriaId = req.params.id;
 
-        // Step 3: Check if address exists
+        
         const checkAddressQuery = 'SELECT * FROM selection_criteria WHERE id = ?';
         const [criteria] = await db.execute(checkAddressQuery, [criteriaId]);
 
@@ -71,7 +42,7 @@ const updateCriteria = async (req, res) => {
             });
         }
 
-        // Step 4: Update the address
+        
         const updateQuery = 'UPDATE selection_criteria SET  description = ? WHERE id = ?';
         await db.execute(updateQuery, [description,criteriaId]);
 
@@ -135,12 +106,12 @@ const getCriteriaById = async (req, res) => {
     }
 };
 
-// Delete an address
+
 const deleteCriteria = async (req, res) => {
     try {
         const criteriaId = parseInt(req.params.id, 10);
 
-        // Validate address ID format
+        
         if (isNaN(criteriaId)) {
             return res.status(400).json({
                 status: 'fail',

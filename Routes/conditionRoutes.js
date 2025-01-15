@@ -2,7 +2,7 @@ import express from 'express';
 import conditionController from '../controllers/conditionsController.js';
 
 const controllerRoutes = express.Router();
-// Define routes and map to controller
+
 
 controllerRoutes.post('/', conditionController.createConditionForSubmition);
 controllerRoutes.put('/:id',conditionController.updateCondition);

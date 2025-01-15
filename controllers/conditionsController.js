@@ -4,10 +4,10 @@ const createConditionForSubmition = async (req, res) => {
     try {
     
 
-        // Step 2: Destructure and prepare data
+       
         const { description} = req.body;
 
-        // Step 3: Insert data into the database
+        
         const query = 'INSERT INTO conditions (description) VALUES (?)';
         const result = await db.execute(query, [description]);
 
@@ -28,11 +28,11 @@ const createConditionForSubmition = async (req, res) => {
 const updateCondition = async (req, res) => {
     try {
 
-        // Step 2: Destructure and prepare data
+        
         const { description } = req.body;
         const conditionId = req.params.id;
 
-        // Step 3: Check if address exists
+        
         const checkConditionQuery = 'SELECT * FROM Addresses WHERE address_id = ?';
         const condition = await db.execute(checkConditionQuery, [conditionId]);
 
@@ -43,7 +43,7 @@ const updateCondition = async (req, res) => {
             });
         }
 
-        // Step 4: Update the address
+       
         const updateQuery = 'UPDATE conditions SET description = ? WHERE id = ?';
         await db.execute(updateQuery, [description,conditionId]);
 
@@ -74,7 +74,7 @@ const getConditionById = async (req, res) => {
     try {
         const conditionId = parseInt(req.params.id, 10);
 
-        // Validate address ID format
+       
         if (isNaN(conditionId)) {
             return res.status(400).json({
                 status: 'fail',
@@ -109,7 +109,7 @@ const deleteCondition = async (req, res) => {
     try {
         const conditionId = parseInt(req.params.id, 10);
 
-        // Validate address ID format
+        
         if (isNaN(conditionId)) {
             return res.status(400).json({
                 status: 'fail',

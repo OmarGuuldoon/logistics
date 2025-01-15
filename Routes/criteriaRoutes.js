@@ -2,7 +2,7 @@ import express from 'express';
 import criteriaController from '../controllers/criteriaControllers.js';
 
 const controllerRoutes = express.Router();
-// Define routes and map to controller
+
 
 controllerRoutes.post('/', criteriaController.createCriteria);
 controllerRoutes.put('/:id', criteriaController.updateCriteria);

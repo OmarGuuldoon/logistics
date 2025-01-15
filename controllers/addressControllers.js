@@ -1,5 +1,5 @@
 import db from '../Config/config.js';
-import addressSchema from '../validation/addressValidation.js'; // Import the validation schema
+import addressSchema from '../validation/addressValidation.js';
 
 // Helper function to handle async database queries
 // const queryAsync = (query, params) => {
@@ -14,10 +14,9 @@ import addressSchema from '../validation/addressValidation.js'; // Import the va
 //     });
 // };
 
-// Create a new address
 const createAddress = async (req, res) => {
     try {
-        // Step 1: Validate input data
+    
         const { error } = addressSchema.validate(req.body);
         if (error) {
             return res.status(400).json({
@@ -26,10 +25,10 @@ const createAddress = async (req, res) => {
             });
         }
 
-        // Step 2: Destructure and prepare data
+    
         const { branch_name, attention_to, designation, location_details, email, mobile } = req.body;
 
-        // Step 3: Insert data into the database
+    
         const query = 'INSERT INTO Addresses (branch_name, attention_to, designation, location_details, email, mobile) VALUES (?, ?, ?, ?, ?, ?)';
         const result = await db.execute(query, [branch_name, attention_to, designation, location_details, email, mobile]);
 
@@ -47,10 +46,10 @@ const createAddress = async (req, res) => {
     }
 };
 
-// Update an existing address
+
 const updateAddress = async (req, res) => {
     try {
-        // Step 1: Validate input data
+    
         const { error } = addressSchema.validate(req.body);
         if (error) {
             return res.status(400).json({
@@ -59,11 +58,11 @@ const updateAddress = async (req, res) => {
             });
         }
 
-        // Step 2: Destructure and prepare data
+        
         const { branch_name, attention_to, designation, location_details, email, mobile } = req.body;
         const addressId = req.params.id;
 
-        // Step 3: Check if address exists
+        
         const checkAddressQuery = 'SELECT * FROM Addresses WHERE address_id = ?';
         const address = await db.execute(checkAddressQuery, [addressId]);
 
@@ -74,7 +73,7 @@ const updateAddress = async (req, res) => {
             });
         }
 
-        // Step 4: Update the address
+        
         const updateQuery = 'UPDATE Addresses SET branch_name = ?, attention_to = ?, designation = ?, location_details = ?, email = ?, mobile = ? WHERE address_id = ?';
         await db.execute(updateQuery, [branch_name, attention_to, designation, location_details, email, mobile, addressId]);
 
@@ -91,7 +90,6 @@ const updateAddress = async (req, res) => {
     }
 };
 
-// Get all addresses
 const getAllAddresses = async (req, res) => {
     try {
         const query = 'SELECT * FROM Addresses';
@@ -103,12 +101,11 @@ const getAllAddresses = async (req, res) => {
     }
 };
 
-// Get an address by ID
 const getAddressById = async (req, res) => {
     try {
         const addressId = parseInt(req.params.id, 10);
 
-        // Validate address ID format
+        
         if (isNaN(addressId)) {
             return res.status(400).json({
                 status: 'fail',
@@ -139,12 +136,11 @@ const getAddressById = async (req, res) => {
     }
 };
 
-// Delete an address
 const deleteAddress = async (req, res) => {
     try {
         const addressId = parseInt(req.params.id, 10);
 
-        // Validate address ID format
+        
         if (isNaN(addressId)) {
             return res.status(400).json({
                 status: 'fail',

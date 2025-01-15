@@ -4,7 +4,7 @@ const approveRequisition = async (req, res) => {
     const { requisition_id } = req.params;
     const { user_id, status, remarks } = req.body;
 
-    // Validate input
+    
     if (!status || !['Approved', 'Rejected'].includes(status)) {
         return res.status(400).json({ message: "Invalid status. Must be 'Approved' or 'Rejected'." });
     }
@@ -17,7 +17,7 @@ const approveRequisition = async (req, res) => {
     await connection.beginTransaction();
 
     try {
-        // Fetch the current requisition
+       
         const [requisition] = await connection.execute(
             `SELECT * FROM Requisitions WHERE requisition_id = ?`,
             [requisition_id]
@@ -45,7 +45,7 @@ const approveRequisition = async (req, res) => {
             return res.status(400).json({ message: "Requisition has already been fully approved." });
         }
 
-        // Fetch the user's approval stage
+        
         const [user] = await connection.execute(
             `SELECT approval_stage FROM Users WHERE user_id = ?`,
             [user_id]
@@ -58,7 +58,7 @@ const approveRequisition = async (req, res) => {
 
         const { approval_stage } = user[0];
 
-        // Ensure the user is authorized for the current state
+        
         if (approval_stage !== current_state) {
             connection.release();
             return res.status(403).json({
@@ -66,7 +66,7 @@ const approveRequisition = async (req, res) => {
             });
         }
 
-        // Check if the user has already approved or rejected
+        
         const [approvalStatus] = await connection.execute(
             `SELECT status FROM ApprovalWorkflow 
              WHERE requisition_id = ? AND role = ?`,
@@ -87,7 +87,7 @@ const approveRequisition = async (req, res) => {
             });
         }
 
-        // Update ApprovalWorkflow Table
+        
         await connection.execute(
             `UPDATE ApprovalWorkflow 
              SET status = ?, remarks = ?, approved_at = NOW() 
@@ -96,7 +96,7 @@ const approveRequisition = async (req, res) => {
         );
 
         if (status === 'Rejected') {
-            // If rejected, update requisition status and end workflow
+            
             await connection.execute(
                 `UPDATE Requisitions 
                  SET status = 'Rejected' 
@@ -110,7 +110,7 @@ const approveRequisition = async (req, res) => {
             return res.status(200).json({ message: "Requisition rejected successfully." });
         }
 
-        // Determine the next state in the approval workflow
+        
         const nextState = getNextState(current_state);
 
         if (nextState) {
@@ -121,7 +121,7 @@ const approveRequisition = async (req, res) => {
                 [nextState, requisition_id]
             );
         } else {
-            // If no next state, mark the requisition as fully approved
+            
             await connection.execute(
                 `UPDATE Requisitions 
                  SET status = 'Approved', current_state = 'Approved' 
@@ -141,7 +141,7 @@ const approveRequisition = async (req, res) => {
     }
 };
 
-// Helper Function: Get Next State
+
 const getNextState = (currentState) => {
     const states = [
         "Requester",

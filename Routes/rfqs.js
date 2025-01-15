@@ -2,7 +2,8 @@ import express from 'express';
 import rfqController from '../controllers/rfqsController.js';
 
 const rfqsRouter = express.Router();
-// CRUD Routes for Supplier
+
+
 rfqsRouter.post('/submit',rfqController.createRFQs); 
 rfqsRouter.post('/share',rfqController.shareRFQToSuppliers); 
 rfqsRouter.get('/',rfqController.getRFQs);

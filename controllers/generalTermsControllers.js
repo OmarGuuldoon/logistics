@@ -4,10 +4,9 @@ const createGeneralTerms = async (req, res) => {
     try {
     
 
-        // Step 2: Destructure and prepare data
         const { description} = req.body;
 
-        // Step 3: Insert data into the database
+        
         const query = 'INSERT INTO general_terms (description) VALUES (?)';
         const result = await db.execute(query, [description]);
 
@@ -28,11 +27,11 @@ const createGeneralTerms = async (req, res) => {
 const updateGeneralTerms = async (req, res) => {
     try {
 
-        // Step 2: Destructure and prepare data
+        
         const { description } = req.body;
         const id = req.params.id;
 
-        // Step 3: Check if address exists
+        
         const checkGeneralTermsQuery = 'SELECT * FROM general_terms WHERE id = ?';
         const generalTerms = await db.execute(checkGeneralTermsQuery, [id]);
 
@@ -43,7 +42,7 @@ const updateGeneralTerms = async (req, res) => {
             });
         }
 
-        // Step 4: Update the address
+       
         const updateQuery = 'UPDATE general_terms SET description = ? WHERE id = ?';
         await db.execute(updateQuery, [description,id]);
 
@@ -74,7 +73,7 @@ const getGeneralTermsById = async (req, res) => {
     try {
         const id = parseInt(req.params.id, 10);
 
-        // Validate address ID format
+        
         if (isNaN(id)) {
             return res.status(400).json({
                 status: 'fail',
@@ -109,7 +108,7 @@ const deleteGeneralTerms = async (req, res) => {
     try {
         const id = parseInt(req.params.id, 10);
 
-        // Validate address ID format
+        
         if (isNaN(id)) {
             return res.status(400).json({
                 status: 'fail',
